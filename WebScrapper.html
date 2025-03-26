@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Scraper</title>
+</head>
+<body>
+    <h1>Web Scraper and Summarizer</h1>
+    <form id="scrapeForm">
+        <input type="url" name="url" placeholder="Enter URL" required><br>
+        <button type="submit">Scrape and Summarize</button>
+    </form>
+    <div id="summary"></div>
+
+    <script>
+        document.getElementById("scrapeForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+
+            fetch("/", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("summary").textContent = data.summary;
+            });
+        });
+    </script>
+</body>
+</html>

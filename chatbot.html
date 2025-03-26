@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+</head>
+<body>
+    <h1>Chatbot</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file"><br>
+        <select name="model">
+            {% for model in models %}
+                <option value="{{ model }}">{{ model }}</option>
+            {% endfor %}
+        </select><br>
+        <input type="text" name="question" placeholder="Ask a question"><br>
+        <button type="submit">Ask</button>
+    </form>
+    <div id="response"></div>
+
+    <script>
+        document.getElementById("uploadForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+
+            fetch("/", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.response) {
+                    document.getElementById("response").textContent = data.response;
+                } else if (data.error){
+                    document.getElementById("response").textContent = "Error: " + data.error;
+                }
+
+            });
+        });
+    </script>
+</body>
+</html>
